@@ -19,10 +19,24 @@ import com.example.winpressive.ui.settings.SettingsScreen
 import com.example.winpressive.ui.navigation.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
+import androidx.lifecycle.lifecycleScope
+import com.example.winpressive.data.LauncherRepository
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var launcherRepository: LauncherRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        lifecycleScope.launch {
+            launcherRepository.ensureDefaultTiles()
+        }
+
         setContent {
             WinpressiveTheme {
                 val navController = rememberNavController()
